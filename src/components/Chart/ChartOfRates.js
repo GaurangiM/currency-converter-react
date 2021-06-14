@@ -37,8 +37,8 @@ const ChartOfRates = (props)=> {
     <div>
       <Plot data={[
           {
-            x: xValues,
-            y: yValues,
+            x: [...xValues.map(i=> i)],
+            y: [...yValues.map(i=> i)],
             type: 'scatter',
             mode: 'lines+markers',
             marker: {color: 'red'},

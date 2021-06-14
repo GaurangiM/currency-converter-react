@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
+import './Currencyform.css'
+
 const CurrencyForm = (props) => {
 
+  const currencyFlag = "currency-flag-" + props.defaultCurrency.toLowerCase()
+  console.log(currencyFlag)
+
   return (
-    <div>
+    <div className="currencyRow ">
       <input type="number" 
-              className="currencyForm" 
+              className="currencyForm shadow" 
               value={props.amount}
               onChange={props.onAmountChange}/>
       <select value={props.defaultCurrency}
@@ -17,6 +22,8 @@ const CurrencyForm = (props) => {
                   </option>
         })}
       </select>
+
+      <span class={`currency-flag-xl currency-flag ${currencyFlag} flag`}></span>
     </div>
   )
 }

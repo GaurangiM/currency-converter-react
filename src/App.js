@@ -18,6 +18,7 @@ const App = ()=> {
   const [amount, setAmount] = useState(1);
   const [isAmountFromSource, setIsAmountFromsource] = useState(true);
   const [exchangeRate, setExchangeRate] = useState();
+  const [isDifferentDate, setDifferentDate] = useState(false)
   //const today = new Date();
   
   const testDate =  moment().format('YYYY-MM-DD')
@@ -95,34 +96,37 @@ const App = ()=> {
     
     <div className="App">
         <h1>Currency Converter</h1>
-        <p>1 {sourceCurrency} equals to {exchangeRate} {targetCurrency}</p>
-        <CurrencyForm currencies= {currencies}
-                      defaultCurrency= {sourceCurrency}
-                      amount= {sourceAmount}
-                      onAmountChange= {handleSourceAmountChange}
-                      onChangeHandler= {e=> setSourceCurrency(e.target.value)}/>
-        <p className="equalsSign">=</p>
-        <CurrencyForm currencies= {currencies}
-                      defaultCurrency= {targetCurrency}
-                      amount={targetAmount}
-                      onAmountChange= {handleTargetAmountChange}
-                      onChangeHandler= {e=> setTargetCurrency(e.target.value)}/>
-        <p>Do you wish to choose different day to convert, go ahead and select your day !</p>
-        <input id="datePickerId" type="date"
-                max= {new Date()} 
-                className="inputDate"
-                value={newDate}
-                onChange={(e)=> {
-                    setNewDate(e.target.value)
-                    console.log(e.target.value)
-                    fetchDataForInputDate(e.target.value)}
-                
-        }/>
-        <DatePicker selected={moment(newDate).toDate()} 
-                    onChange={(date) => setNewDate(moment(date).format('YYYY-MM-DD'))}
-                    dateFormat="yyyy-mm-dd"
-                    maxDate={moment().toDate()}
-                    inline />
+        <div className="exchangeForm">
+          <h2>1 {sourceCurrency} equals to {exchangeRate} {targetCurrency}</h2>
+          <CurrencyForm currencies= {currencies}
+                        defaultCurrency= {sourceCurrency}
+                        amount= {sourceAmount}
+                        onAmountChange= {handleSourceAmountChange}
+                        onChangeHandler= {e=> setSourceCurrency(e.target.value)}/>
+          <p className="equalsSign">=</p>
+          <CurrencyForm currencies= {currencies}
+                        defaultCurrency= {targetCurrency}
+                        amount={targetAmount}
+                        onAmountChange= {handleTargetAmountChange}
+                        onChangeHandler= {e=> setTargetCurrency(e.target.value)}/>
+          <p>Do you wish to choose different day to convert, go ahead and select your day !</p>
+          
+          <button type="submit" 
+                  onClick={()=> setDifferentDate(!isDifferentDate)}>
+                    {isDifferentDate? "Hide Calender" : "Show Calender"}
+          </button>
+          {isDifferentDate && (
+              <DatePicker selected={moment(newDate).toDate()} 
+              onChange={(date) => setNewDate(moment(date).format('YYYY-MM-DD'))}
+              dateFormat="yyyy-mm-dd"
+              maxDate={moment().toDate()}
+              inline />
+          )}
+        </div>
+        
+        
+        
+       
     </div>
   );
 }
