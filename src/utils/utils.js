@@ -1,9 +1,9 @@
-export const formatHistoricalData = (ratesData) => {
+export const formatHistoricalData = (ratesData, targetCurrency, sourceCurrency) => {
   let finalData = {
     labels: [],
     datasets: [
       {
-        label: "Price",
+        label: `Exchange Rate of ${sourceCurrency} to ${targetCurrency} `,
         data: [],
         backgroundColor: "rgb(255, 99, 132, 0.8)",
         borderColor: "rgba(255, 99, 132, 0.2)",
@@ -12,7 +12,7 @@ export const formatHistoricalData = (ratesData) => {
     ]
   };
   let labels = ([...Object.keys(ratesData)])
-  let data = ([...Object.values(ratesData).map(i=> i["USD"])])
+  let data = ([...Object.values(ratesData).map(i=> i[`${targetCurrency}`])])
   
   finalData.labels = labels
   finalData.datasets[0].data = data

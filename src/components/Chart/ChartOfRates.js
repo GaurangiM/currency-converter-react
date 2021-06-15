@@ -6,7 +6,7 @@ import { Line } from "react-chartjs-2";
 const ChartOfRates = ({ratesData, baseCurrency})=> {
 
 
-  let finalData = {
+  /*let finalData = {
     labels: [],
     datasets: [
       {
@@ -16,9 +16,9 @@ const ChartOfRates = ({ratesData, baseCurrency})=> {
         borderColor: "rgba(255, 99, 132, 0.2)",
         fill: false
       }
-      
+
     ]
-  };
+  };*/
 
   const opts = {
     tooltips: {
@@ -29,7 +29,7 @@ const ChartOfRates = ({ratesData, baseCurrency})=> {
     
   };
 
-  const [labels, setLabels] = useState([])
+  /*const [labels, setLabels] = useState([])
   const [data, setData] = useState([])
   const [chartData, setChartData] = useState()
 
@@ -51,7 +51,7 @@ const ChartOfRates = ({ratesData, baseCurrency})=> {
       setChartData(finalData)
     }
     fetchHistoricData()
-  }, [])
+  }, [])*/
   
     
     
@@ -62,8 +62,8 @@ const ChartOfRates = ({ratesData, baseCurrency})=> {
     <div className="dashBoard">
       Chart
       <div className="chart-container">
-        {chartData && (
-          <Line data={chartData} options={opts} />
+        {ratesData && (
+          <Line data={ratesData} options={opts} />
         )}
         
       </div>

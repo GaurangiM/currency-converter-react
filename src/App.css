@@ -12,7 +12,7 @@ background-image: linear-gradient(315deg, #d9e4f5 0%, #f5e3e6 74%);
 
 h1 {
   margin: 0;
-  margin-bottom: 2.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .currencyForm {
@@ -36,7 +36,7 @@ select {
 
 .exchangeForm {
   border: 1px solid lightgray;
-  padding: 60px 50px;
+  padding: 10px 100px;
   border-radius: 0.3em;
   background-color: #fad0c4;
 background-image: linear-gradient(315deg, #fad0c4 0%, #f1a7f1 74%);
@@ -80,5 +80,7 @@ background-image: linear-gradient(315deg, #fad0c4 0%, #f1a7f1 74%);
   border-radius: 17px;
 }
 
-
+.dashBoard {
+  margin-top: 2.5rem;
+}
 

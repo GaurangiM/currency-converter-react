@@ -81,6 +81,7 @@ const App = ()=> {
     if(targetCurrency !== null) {
       fetchChangedCurrency()
     }
+    fetchHistoricData()
 
   }, [sourceCurrency, targetCurrency, newDate, addCurrencyRow])
 
@@ -97,7 +98,7 @@ const App = ()=> {
   const fetchHistoricData = async() => {
     const response = await axios.get(`https://api.frankfurter.app/2020-04-01..2021-05-01?from=${sourceCurrency}&to=${targetCurrency}`)
     console.log("History", response)
-    let finalData = formatHistoricalData(response.data.rates)
+    let finalData = formatHistoricalData(response.data.rates, targetCurrency, sourceCurrency)
     setPastData(finalData)
     console.log(pastData)
   }
@@ -112,10 +113,8 @@ const App = ()=> {
                         defaultCurrency= {sourceCurrency}
                         amount= {sourceAmount}
                         onAmountChange= {handleSourceAmountChange}
-                        onChangeHandler= {(_, e)=> setSourceCurrency(e.target.value)}/>
-          <p className="equalsSign">=</p>
-
-          
+                        onChangeHandler= {(e)=> setSourceCurrency(e.target.value)}/>
+          <span style={{fontSize: 30}}>=</span>
           <CurrencyForm currencies= {currencies}
                             defaultCurrency= {targetCurrency}
                             amount={targetAmount}
@@ -123,9 +122,6 @@ const App = ()=> {
                             onChangeHandler= {(event)=> {
                               setTargetCurrency(event.target.value)
                             }}/>
-          
-
-          
           {addCurrencyRow && (
             <CurrencyForm currencies= {currencies}
             defaultCurrency= {targetCurrency}
@@ -151,18 +147,10 @@ const App = ()=> {
               maxDate={moment().toDate()}
               inline />
           )}
-          <button className="chartButton"
-                  onClick={()=> {
-                    fetchHistoricData()
-                    setShowChart(!showChart)
-                    }}>
-                    Show Chart
-          </button>
         </div>
-        {showChart && (
-          <ChartOfRates ratesData={pastData}
-                        baseCurrency={sourceCurrency}/>
-        )}
+        <ChartOfRates ratesData={pastData}
+                      baseCurrency={sourceCurrency}/>
+        
         
         
         
