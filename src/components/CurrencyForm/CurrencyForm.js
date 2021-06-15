@@ -8,6 +8,8 @@ const CurrencyForm = (props) => {
   const currencyFlag = "currency-flag-" + props.defaultCurrency.toLowerCase()
   console.log(currencyFlag)
 
+
+
   return (
     <div className="currencyRow ">
       <input type="number" 

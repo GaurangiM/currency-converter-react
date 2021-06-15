@@ -1,50 +1,72 @@
 import axios from 'axios';
 import React, {useState, useEffect} from 'react';
-import Plot from 'react-plotly.js';
+import { Line } from "react-chartjs-2";
 
 
-const ChartOfRates = (props)=> {
+const ChartOfRates = ({ratesData, baseCurrency})=> {
 
-  const [chartData, setChartData] = useState([])
-  const [xValues, setXValues] = useState([])
-  const [yValues, setYValues] = useState([])
-  const { source, target } = props
-  console.log(xValues.length, yValues.length)
 
-  useEffect(()=> {
-    const fetchHistoricalData = async()=> {
-      if(source !== null && target !== null) {
-        const response = await axios.get(`https://api.frankfurter.app/2019-01-04..?from=${source}&to=${target}`)
-      console.log("Chart", response.data.rates)
-      const xValuesData = [...Object.keys(response.data.rates)]
-      let yValuesData = [...Object.values(response.data.rates)]
-      //const yValuesData = [...Object.values(yValues)]
-      console.log("x", xValuesData.length, yValuesData.length)
-      //setChartData([response.data.rates])
-      yValuesData = yValuesData.map(item=> Object.values(item))
-      setXValues([...xValuesData])
-      setYValues([...yValuesData])
-      //const currencyKey = target.toString()
-      //console.log(yValues.map(item=> Object.values(item)))
+  let finalData = {
+    labels: [],
+    datasets: [
+      {
+        label: "Exchange Rate",
+        data: [],
+        backgroundColor: "rgb(255, 99, 132, 0.8)",
+        borderColor: "rgba(255, 99, 132, 0.2)",
+        fill: false
       }
       
-    }
-    fetchHistoricalData()
-  }, [source, target])
+    ]
+  };
 
+  const opts = {
+    tooltips: {
+      intersect: false,
+      mode: "index"
+    },
+    responsive: true,
+    
+  };
+
+  const [labels, setLabels] = useState([])
+  const [data, setData] = useState([])
+  const [chartData, setChartData] = useState()
+
+
+
+  let currency = "USD"
+  useEffect(()=> {
+    const fetchHistoricData = async()=> {
+      const response = await axios.get(`https://api.frankfurter.app/2020-04-01..2021-05-01?to=USD`)
+      console.log([...Object.values(response.data.rates).map(i=> i[`${currency}`])])
+      setLabels([...Object.keys(response.data.rates)])
+      setData([...Object.values(response.data.rates).map(i=> i[`${currency}`])])
+      finalData.labels = labels
+      finalData.datasets[0].data = data
+
+      
+
+      console.log(finalData)
+      setChartData(finalData)
+    }
+    fetchHistoricData()
+  }, [])
+  
+    
+    
+
+  
 
   return (
-    <div>
-      <Plot data={[
-          {
-            x: [...xValues.map(i=> i)],
-            y: [...yValues.map(i=> i)],
-            type: 'scatter',
-            mode: 'lines+markers',
-            marker: {color: 'red'},
-          },
-        ]}
-        layout={ {width: 720, height: 440, title: 'A Fancy Plot'} }/>
+    <div className="dashBoard">
+      Chart
+      <div className="chart-container">
+        {chartData && (
+          <Line data={chartData} options={opts} />
+        )}
+        
+      </div>
     </div>
   )
 }

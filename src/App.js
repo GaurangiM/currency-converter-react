@@ -8,6 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import CurrencyForm  from './components/CurrencyForm/CurrencyForm';
 import ChartOfRates from './components/Chart/ChartOfRates';
+import { formatHistoricalData } from './utils/utils';
 
 const App = ()=> {
 
@@ -20,10 +21,18 @@ const App = ()=> {
   const [exchangeRate, setExchangeRate] = useState();
   const [isDifferentDate, setDifferentDate] = useState(false)
   const [addCurrencyRow, setAddCurrencyRow] = useState(false)
+  const [showChart, setShowChart] = useState(false)
+  const [pastData, setPastData] = useState()
+
+  const [currencyRowList, setCurrencyRowList] = useState([{
+    currencies,
+    targetCurrency,
+    amount
+  }])
   
-  const testDate =  moment().format('YYYY-MM-DD')
+  const today =  moment().format('YYYY-MM-DD')
   
-  const [newDate, setNewDate] = useState(testDate)
+  const [newDate, setNewDate] = useState(today)
 
   let sourceAmount, targetAmount
   
@@ -40,8 +49,7 @@ const App = ()=> {
     const fetchData = async()=> {
       const response = await axios.get("https://api.frankfurter.app/latest")
       const currencyListData = await axios.get("https://api.frankfurter.app/currencies")
-      console.log(response, currencyListData)
-
+      console.log(response)
       //Set default source and target currencies
       const firstCurrency = Object.keys(response.data.rates)[0]
       setCurrencies([response.data.base, ...Object.keys(response.data.rates)])
@@ -49,6 +57,11 @@ const App = ()=> {
       setTargetCurrency(firstCurrency)
       setExchangeRate(response.data.rates[firstCurrency])
       setCurrencyList({...currencyListData.data})
+      setCurrencyRowList([
+        {
+        currencies:[response.data.base, ...Object.keys(response.data.rates)],
+        targetCurrency: firstCurrency
+      }])
     }
     fetchData()
     
@@ -59,8 +72,8 @@ const App = ()=> {
     const fetchChangedCurrency = async()=> {
       if(sourceCurrency) {
         const response = await axios.get(`https://api.frankfurter.app/${newDate}?from=${sourceCurrency}`)
-        console.log(response)
         setExchangeRate(response.data.rates[targetCurrency])
+        console.log(response)
       }
       
     }
@@ -81,18 +94,14 @@ const App = ()=> {
     setIsAmountFromsource(false)
   }
 
-  const fetchDataForInputDate = async()=> {
-    
-    if(newDate !== undefined) {
-      const response = await axios.get(`https://api.frankfurter.app/${newDate}?from=${sourceCurrency}&to=${targetCurrency}`)
-      console.log(Object.values(response.data.rates))
-      setExchangeRate(Object.values(response.data.rates))
-    }
-    
+  const fetchHistoricData = async() => {
+    const response = await axios.get(`https://api.frankfurter.app/2020-04-01..2021-05-01?from=${sourceCurrency}&to=${targetCurrency}`)
+    console.log("History", response)
+    let finalData = formatHistoricalData(response.data.rates)
+    setPastData(finalData)
+    console.log(pastData)
   }
-
-
-  
+ 
   return (
     
     <div className="App">
@@ -103,13 +112,20 @@ const App = ()=> {
                         defaultCurrency= {sourceCurrency}
                         amount= {sourceAmount}
                         onAmountChange= {handleSourceAmountChange}
-                        onChangeHandler= {e=> setSourceCurrency(e.target.value)}/>
+                        onChangeHandler= {(_, e)=> setSourceCurrency(e.target.value)}/>
           <p className="equalsSign">=</p>
+
+          
           <CurrencyForm currencies= {currencies}
-                        defaultCurrency= {targetCurrency}
-                        amount={targetAmount}
-                        onAmountChange= {handleTargetAmountChange}
-                        onChangeHandler= {e=> setTargetCurrency(e.target.value)}/>
+                            defaultCurrency= {targetCurrency}
+                            amount={targetAmount}
+                            onAmountChange= {handleTargetAmountChange}
+                            onChangeHandler= {(event)=> {
+                              setTargetCurrency(event.target.value)
+                            }}/>
+          
+
+          
           {addCurrencyRow && (
             <CurrencyForm currencies= {currencies}
             defaultCurrency= {targetCurrency}
@@ -117,17 +133,15 @@ const App = ()=> {
             onAmountChange= {handleTargetAmountChange}
             onChangeHandler= {e=> setTargetCurrency(e.target.value)}/>
           )}
-          <button className="addButton shadow"
-                  onClick={()=> setAddCurrencyRow(true)}>
-            ADD
-          </button>
-          
           
           <p>Do you wish to choose different day to convert, go ahead and select your day !</p>
           
           <button type="submit" 
                   className="toggleCalender shadow"
-                  onClick={()=> setDifferentDate(!isDifferentDate)}>
+                  onClick={()=> {
+                    setDifferentDate(!isDifferentDate)
+                    setNewDate(today)
+                    }}>
                     {isDifferentDate? "Hide Calender" : "Show Calender"}
           </button>
           {isDifferentDate && (
@@ -137,7 +151,18 @@ const App = ()=> {
               maxDate={moment().toDate()}
               inline />
           )}
+          <button className="chartButton"
+                  onClick={()=> {
+                    fetchHistoricData()
+                    setShowChart(!showChart)
+                    }}>
+                    Show Chart
+          </button>
         </div>
+        {showChart && (
+          <ChartOfRates ratesData={pastData}
+                        baseCurrency={sourceCurrency}/>
+        )}
         
         
         
