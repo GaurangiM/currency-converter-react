@@ -19,12 +19,11 @@ const App = ()=> {
   const [isAmountFromSource, setIsAmountFromsource] = useState(true);
   const [exchangeRate, setExchangeRate] = useState();
   const [isDifferentDate, setDifferentDate] = useState(false)
-  //const today = new Date();
+  const [addCurrencyRow, setAddCurrencyRow] = useState(false)
   
   const testDate =  moment().format('YYYY-MM-DD')
   
   const [newDate, setNewDate] = useState(testDate)
-  //console.log(newDate)
 
   let sourceAmount, targetAmount
   
@@ -70,7 +69,7 @@ const App = ()=> {
       fetchChangedCurrency()
     }
 
-  }, [sourceCurrency, targetCurrency, newDate])
+  }, [sourceCurrency, targetCurrency, newDate, addCurrencyRow])
 
   const handleSourceAmountChange = (e)=> {
     setAmount(e.target.value)
@@ -91,6 +90,8 @@ const App = ()=> {
     }
     
   }
+
+
   
   return (
     
@@ -109,20 +110,23 @@ const App = ()=> {
                         amount={targetAmount}
                         onAmountChange= {handleTargetAmountChange}
                         onChangeHandler= {e=> setTargetCurrency(e.target.value)}/>
-          <svg fill='none' stroke='#0E1A27' stroke-width='8' 
-          stroke-dashoffset='0' stroke-dasharray='0' 
-          stroke-linecap='round' stroke-linejoin='round' 
-          xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'
-          className="addButton">
-            <circle cx="50" cy="50" r="40"/> 
-            <line x1="35" y1="50" x2="65" y2="50" /> 
-            <line x1="50" y1="35" x2="50" y2="65" />
-          </svg>
+          {addCurrencyRow && (
+            <CurrencyForm currencies= {currencies}
+            defaultCurrency= {targetCurrency}
+            amount={targetAmount}
+            onAmountChange= {handleTargetAmountChange}
+            onChangeHandler= {e=> setTargetCurrency(e.target.value)}/>
+          )}
+          <button className="addButton shadow"
+                  onClick={()=> setAddCurrencyRow(true)}>
+            ADD
+          </button>
+          
           
           <p>Do you wish to choose different day to convert, go ahead and select your day !</p>
           
           <button type="submit" 
-                  className="toggleCalender"
+                  className="toggleCalender shadow"
                   onClick={()=> setDifferentDate(!isDifferentDate)}>
                     {isDifferentDate? "Hide Calender" : "Show Calender"}
           </button>

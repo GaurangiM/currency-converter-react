@@ -6,6 +6,8 @@ body {
   min-height: 100vh;
   text-align: center;
   font-family: 'Raleway', sans-serif;
+  background-color: #d9e4f5;
+background-image: linear-gradient(315deg, #d9e4f5 0%, #f5e3e6 74%);
 }
 
 h1 {
@@ -16,14 +18,14 @@ h1 {
 .currencyForm {
   padding: 0.9rem;
   width: 15em;
-  border: 1px solid lightgray;
+  border: 1px solid transparent;
   border-radius: 0.3em;
 }
 
 select {
   margin-left: 0.5rem;
   padding: 0.7rem 1.2rem;
-  border: 1px solid lightgray;
+  border: 1px solid transparent;
   border-radius: 0.3em;
 }
 
@@ -36,6 +38,10 @@ select {
   border: 1px solid lightgray;
   padding: 60px 50px;
   border-radius: 0.3em;
+  background-color: #fad0c4;
+background-image: linear-gradient(315deg, #fad0c4 0%, #f1a7f1 74%);
+
+
 } 
 
 .shadow{
@@ -49,6 +55,7 @@ select {
   background-color: white;
   padding: 10px 20px;
   font-family: 'Raleway', sans-serif;
+  border-color: transparent;
 }
 
 .toggleCalender:hover {
@@ -56,12 +63,20 @@ select {
   background-color: black;
 }
 
-.addButton {
+.addButtonIcon {
   max-width: 40px;
 }
 
 .addButton:hover {
   cursor: pointer;
-  
+  color: white;
+  background-color: black;
+}
+
+.addButton {
+  width: 60px;
+  border-color: transparent;
+  padding: 10px 15px;
+  border-radius: 17px;
 }
 
