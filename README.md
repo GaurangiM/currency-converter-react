@@ -8,7 +8,7 @@
 </p>
 <h1 align="center">
 	<img
-		width="300"
+		width="600"
 		alt="The Lounge"
 		src="public/6FE305D8-214F-44A1-B5E3-8328C7185658_1_105_c.jpeg">
 </h1>
