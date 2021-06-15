@@ -15,7 +15,8 @@ const CurrencyForm = (props) => {
               value={props.amount}
               onChange={props.onAmountChange}/>
       <select value={props.defaultCurrency}
-              onChange={props.onChangeHandler}>
+              onChange={props.onChangeHandler}
+              className="shadow">
         {props.currencies.map((currency, index)=> {
           return <option value={currency}
                           key={index}>{currency}

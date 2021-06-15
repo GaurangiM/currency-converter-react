@@ -96,7 +96,7 @@ const App = ()=> {
     
     <div className="App">
         <h1>Currency Converter</h1>
-        <div className="exchangeForm">
+        <div className="exchangeForm shadow">
           <h2>1 {sourceCurrency} equals to {exchangeRate} {targetCurrency}</h2>
           <CurrencyForm currencies= {currencies}
                         defaultCurrency= {sourceCurrency}
@@ -109,9 +109,20 @@ const App = ()=> {
                         amount={targetAmount}
                         onAmountChange= {handleTargetAmountChange}
                         onChangeHandler= {e=> setTargetCurrency(e.target.value)}/>
+          <svg fill='none' stroke='#0E1A27' stroke-width='8' 
+          stroke-dashoffset='0' stroke-dasharray='0' 
+          stroke-linecap='round' stroke-linejoin='round' 
+          xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'
+          className="addButton">
+            <circle cx="50" cy="50" r="40"/> 
+            <line x1="35" y1="50" x2="65" y2="50" /> 
+            <line x1="50" y1="35" x2="50" y2="65" />
+          </svg>
+          
           <p>Do you wish to choose different day to convert, go ahead and select your day !</p>
           
           <button type="submit" 
+                  className="toggleCalender"
                   onClick={()=> setDifferentDate(!isDifferentDate)}>
                     {isDifferentDate? "Hide Calender" : "Show Calender"}
           </button>

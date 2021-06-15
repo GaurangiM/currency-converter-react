@@ -6,10 +6,15 @@
   background-image:url('https://wise.com/public-resources/assets/flags/rectangle_fallback.png');
 }
 
+.flag {
+  border: 1px solid lightgray;
+}
+
 .currencyRow {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+  margin-bottom: 2rem;
 }
 
 .currency-flag-sm {
