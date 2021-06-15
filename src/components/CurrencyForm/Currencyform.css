@@ -17,6 +17,10 @@
   margin-bottom: 0.5rem;
 }
 
+input, select:focus {
+  outline: none;
+}
+
 .currency-flag-sm {
   width: 16px;
   height: 10px;

@@ -9,6 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import CurrencyForm  from './components/CurrencyForm/CurrencyForm';
 import ChartOfRates from './components/Chart/ChartOfRates';
 import { formatHistoricalData } from './utils/utils';
+import { apiUrl } from './config/constants'
 
 const App = ()=> {
 
@@ -31,7 +32,7 @@ const App = ()=> {
   }])
   
   const today =  moment().format('YYYY-MM-DD')
-  
+  const oneMonthBack = moment().subtract(30, 'days').format('YYYY-MM-DD');
   const [newDate, setNewDate] = useState(today)
 
   let sourceAmount, targetAmount
@@ -47,9 +48,9 @@ const App = ()=> {
 
   useEffect(()=> {
     const fetchData = async()=> {
-      const response = await axios.get("https://api.frankfurter.app/latest")
-      const currencyListData = await axios.get("https://api.frankfurter.app/currencies")
-      console.log(response)
+      const response = await axios.get(`${apiUrl}/latest`)
+      const currencyListData = await axios.get(`${apiUrl}/currencies`)
+     
       //Set default source and target currencies
       const firstCurrency = Object.keys(response.data.rates)[0]
       setCurrencies([response.data.base, ...Object.keys(response.data.rates)])
@@ -71,9 +72,8 @@ const App = ()=> {
   useEffect(()=> {
     const fetchChangedCurrency = async()=> {
       if(sourceCurrency) {
-        const response = await axios.get(`https://api.frankfurter.app/${newDate}?from=${sourceCurrency}`)
+        const response = await axios.get(`${apiUrl}/${newDate}?from=${sourceCurrency}`)
         setExchangeRate(response.data.rates[targetCurrency])
-        console.log(response)
       }
       
     }
@@ -81,7 +81,11 @@ const App = ()=> {
     if(targetCurrency !== null) {
       fetchChangedCurrency()
     }
-    fetchHistoricData()
+
+    if(sourceCurrency && targetCurrency) {
+      fetchHistoricData()
+    }
+    
 
   }, [sourceCurrency, targetCurrency, newDate, addCurrencyRow])
 
@@ -96,7 +100,7 @@ const App = ()=> {
   }
 
   const fetchHistoricData = async() => {
-    const response = await axios.get(`https://api.frankfurter.app/2020-04-01..2021-05-01?from=${sourceCurrency}&to=${targetCurrency}`)
+    const response = await axios.get(`${apiUrl}/${oneMonthBack}..${today}?from=${sourceCurrency}&to=${targetCurrency}`)
     console.log("History", response)
     let finalData = formatHistoricalData(response.data.rates, targetCurrency, sourceCurrency)
     setPastData(finalData)

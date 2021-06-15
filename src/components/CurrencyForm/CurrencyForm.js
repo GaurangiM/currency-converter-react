@@ -1,15 +1,9 @@
-import { useEffect, useState } from 'react'
-import axios from 'axios'
-
 import './Currencyform.css'
 
 const CurrencyForm = (props) => {
 
   const currencyFlag = "currency-flag-" + props.defaultCurrency.toLowerCase()
-  console.log(currencyFlag)
-
-
-
+  
   return (
     <div className="currencyRow ">
       <input type="number" 

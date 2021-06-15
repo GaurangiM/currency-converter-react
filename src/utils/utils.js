@@ -3,7 +3,7 @@ export const formatHistoricalData = (ratesData, targetCurrency, sourceCurrency) 
     labels: [],
     datasets: [
       {
-        label: `Exchange Rate of ${sourceCurrency} to ${targetCurrency} `,
+        label: `Exchange Rate of ${sourceCurrency} to ${targetCurrency} for last 30 days `,
         data: [],
         backgroundColor: "rgb(255, 99, 132, 0.8)",
         borderColor: "rgba(255, 99, 132, 0.2)",
