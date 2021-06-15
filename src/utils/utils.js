@@ -17,6 +17,5 @@ export const formatHistoricalData = (ratesData, targetCurrency, sourceCurrency) 
   finalData.labels = labels
   finalData.datasets[0].data = data
   console.log(finalData)
-
-    return finalData
+  return finalData
 }

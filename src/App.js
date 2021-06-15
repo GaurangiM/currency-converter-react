@@ -14,22 +14,13 @@ import { apiUrl } from './config/constants'
 const App = ()=> {
 
   const [currencies, setCurrencies] = useState([]);
-  const [currencyList, setCurrencyList] = useState()
   const [sourceCurrency, setSourceCurrency] = useState("");
   const [targetCurrency, setTargetCurrency] = useState("");
   const [amount, setAmount] = useState(1);
   const [isAmountFromSource, setIsAmountFromsource] = useState(true);
   const [exchangeRate, setExchangeRate] = useState();
   const [isDifferentDate, setDifferentDate] = useState(false)
-  const [addCurrencyRow, setAddCurrencyRow] = useState(false)
-  const [showChart, setShowChart] = useState(false)
   const [pastData, setPastData] = useState()
-
-  const [currencyRowList, setCurrencyRowList] = useState([{
-    currencies,
-    targetCurrency,
-    amount
-  }])
   
   const today =  moment().format('YYYY-MM-DD')
   const oneMonthBack = moment().subtract(30, 'days').format('YYYY-MM-DD');
@@ -49,7 +40,6 @@ const App = ()=> {
   useEffect(()=> {
     const fetchData = async()=> {
       const response = await axios.get(`${apiUrl}/latest`)
-      const currencyListData = await axios.get(`${apiUrl}/currencies`)
      
       //Set default source and target currencies
       const firstCurrency = Object.keys(response.data.rates)[0]
@@ -57,12 +47,6 @@ const App = ()=> {
       setSourceCurrency(response.data.base)
       setTargetCurrency(firstCurrency)
       setExchangeRate(response.data.rates[firstCurrency])
-      setCurrencyList({...currencyListData.data})
-      setCurrencyRowList([
-        {
-        currencies:[response.data.base, ...Object.keys(response.data.rates)],
-        targetCurrency: firstCurrency
-      }])
     }
     fetchData()
     
@@ -87,7 +71,7 @@ const App = ()=> {
     }
     
 
-  }, [sourceCurrency, targetCurrency, newDate, addCurrencyRow])
+  }, [sourceCurrency, targetCurrency, newDate])
 
   const handleSourceAmountChange = (e)=> {
     setAmount(e.target.value)
@@ -126,13 +110,6 @@ const App = ()=> {
                             onChangeHandler= {(event)=> {
                               setTargetCurrency(event.target.value)
                             }}/>
-          {addCurrencyRow && (
-            <CurrencyForm currencies= {currencies}
-            defaultCurrency= {targetCurrency}
-            amount={targetAmount}
-            onAmountChange= {handleTargetAmountChange}
-            onChangeHandler= {e=> setTargetCurrency(e.target.value)}/>
-          )}
           
           <p>Do you wish to choose different day to convert, go ahead and select your day !</p>
           
@@ -155,10 +132,6 @@ const App = ()=> {
         <ChartOfRates ratesData={pastData}
                       baseCurrency={sourceCurrency}/>
         
-        
-        
-        
-       
     </div>
   );
 }

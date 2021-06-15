@@ -20,7 +20,7 @@ const CurrencyForm = (props) => {
         })}
       </select>
 
-      <span class={`currency-flag-xl currency-flag ${currencyFlag} flag`}></span>
+      <span className={`currency-flag-xl currency-flag ${currencyFlag} flag`}></span>
     </div>
   )
 }
