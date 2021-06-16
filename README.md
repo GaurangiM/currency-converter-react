@@ -13,8 +13,10 @@
 		src="public/6FE305D8-214F-44A1-B5E3-8328C7185658_1_105_c.jpeg">
 </h1>
 <h3 align="center">A web-based application to convert amount from one currency to another currency with some added features.
+
 </h3>
 
+- [See in action here](https://epic-pike-eb39c5.netlify.app/)
 ---
 ## Features
 - Ability to select the source and target currencies
