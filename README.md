@@ -16,7 +16,7 @@
 
 </h3>
 
-- [See in action here](https://epic-pike-eb39c5.netlify.app/)
+- [See in action here](https://currency-converter-gm.netlify.app/)
 ---
 ## Features
 - Ability to select the source and target currencies
